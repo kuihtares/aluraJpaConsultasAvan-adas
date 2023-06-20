@@ -6,12 +6,14 @@ import br.com.alura.loja.dao.PedidoDao;
 import br.com.alura.loja.dao.ProdutoDao;
 import br.com.alura.loja.modelo.*;
 import br.com.alura.loja.util.JPAUtil;
+import br.com.alura.loja.vo.RelatorioDeVendasVo;
 
 import javax.persistence.EntityManager;
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Objects;
 
-public class CadastroDePedido
-{
+public class CadastroDePedido {
     public static void main(String[] args) {
         popularBancoDeDados();
         EntityManager em = JPAUtil.getEntityManager();
@@ -31,6 +33,11 @@ public class CadastroDePedido
         pedidoDao.cadastrar(pedido);
 
         em.getTransaction().commit();
+        BigDecimal totalVendido = pedidoDao.valorTotalVendido();
+        System.out.println("Valor total: " + totalVendido);
+
+        List<RelatorioDeVendasVo> relatorio = pedidoDao.relatorioDeVendas();
+        relatorio.forEach(System.out::println);
     }
     private static void popularBancoDeDados() {
         Categoria celulares = new Categoria("CELULARES");
